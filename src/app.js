@@ -14,29 +14,11 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.on("connection", (socket) => {
-
   socket.emit("message", "WELCOME!");
 
-  socket.on('sendMessage', (message) => {
-    io.emit('message', message);
-  })
-
-});
-
-//server (emit) -> cliente (receive) - countUpdated
-//client (emit) -> server (receive) - increment
-
-/* 
-let count = 0;
-io.on("connection", (socket) => {
-  console.log("New WebSocket connection");
-
-  socket.emit("countUpdated", count);
-
-  socket.on("increment", () => {
-    count++;
-    io.emit("countUpdated", count);
+  socket.on("sendMessage", (message) => {
+    io.emit("message", message);
   });
-}); */
+});
 
 module.exports = server;
