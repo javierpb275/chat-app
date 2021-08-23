@@ -13,18 +13,18 @@ const server = http.createServer(app);
 
 const io = socketio(server);
 
-io.on("connection", (socket) => {//run code when a given client connected
-  socket.emit("message", "WELCOME!");//emit to that particular connection
+io.on("connection", (socket) => {
+  socket.emit("message", "WELCOME!");
 
-  socket.broadcast.emit('message', 'A new user has joined!')//emit to everybody but that particular connection
+  socket.broadcast.emit("message", "A new user has joined!");
 
   socket.on("sendMessage", (message) => {
-    io.emit("message", message);//send to everyone
+    io.emit("message", message);
   });
 
-  socket.on('disconnect', () => {
-    io.emit('message', 'A user has left');//when user disconnect, send message to  other users connected
-  })
+  socket.on("disconnect", () => {
+    io.emit("message", "A user has left");
+  });
 });
 
 module.exports = server;
