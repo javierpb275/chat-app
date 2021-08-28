@@ -21,14 +21,9 @@ const io = socketio(server);
 io.on("connection", (socket) => {
 
   socket.on("join", ({ username, room }) => {
-
-    //socket.emit, io.emit, socket.broadcast.emit
-    //io.to.emit, socket.broadcast.to.emit
-
     socket.join(room);
     socket.emit("message", generateMessage("WELCOME!"));
     socket.broadcast.to(room).emit("message", generateMessage(`${username} has joined!`));
-
   });
 
   socket.on("sendMessage", (message, callback) => {
@@ -53,6 +48,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     io.to('room').emit("message", generateMessage("A user has left!"));
   });
+  
 });
 
 module.exports = server;
