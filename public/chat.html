@@ -14,7 +14,12 @@
 
         <div class="compose">
           <form id="message-form">
-            <input name="message" placeholder="Message" required autocomplete="off"/>
+            <input
+              name="message"
+              placeholder="Message"
+              required
+              autocomplete="off"
+            />
             <button>Send</button>
           </form>
           <button id="send-location">Send location</button>
@@ -47,7 +52,7 @@
       <h3 class="list-title">Users</h3>
       <ul class="users">
         {{#users}}
-          <li>{{username}}</li>
+        <li>{{username}}</li>
         {{/users}}
       </ul>
     </script>

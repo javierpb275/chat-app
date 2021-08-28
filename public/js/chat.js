@@ -20,17 +20,12 @@ const { username, room } = Qs.parse(location.search, {
 });
 
 const autoscroll = () => {
-  //New message element
   const $newMessage = $messages.lastElementChild;
-  //height of the new message
   const newMesssageStyles = getComputedStyle($newMessage);
   const newMessageMargin = parseInt(newMesssageStyles.marginBottom);
   const newMesssageHeight = $newMessage.offsetHeight + newMessageMargin;
-  //Visible height
   const visibleHeight = $messages.offsetHeight;
-  //Height of messages container
   const containerHeight = $messages.scrollHeight;
-  //How far have I scrolled?
   const scrollOffset = $messages.scrollTop + visibleHeight;
   if (containerHeight - newMesssageHeight <= scrollOffset) {
     $messages.scrollTop = $messages.scrollHeight;
@@ -38,7 +33,6 @@ const autoscroll = () => {
 };
 
 socket.on("message", (message) => {
-  console.log(message);
   const html = Mustache.render(messageTemplate, {
     username: message.username,
     message: message.text,
@@ -49,7 +43,6 @@ socket.on("message", (message) => {
 });
 
 socket.on("locationMessage", (message) => {
-  console.log(message);
   const html = Mustache.render(locationMessageTemplate, {
     username: message.username,
     url: message.url,
@@ -69,19 +62,15 @@ socket.on("roomData", ({ room, users }) => {
 
 $messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  //disable
   $messageFormButton.setAttribute("disabled", "disabled");
-
   const message = e.target.elements.message.value;
   socket.emit("sendMessage", message, (error) => {
-    //enable
     $messageFormButton.removeAttribute("disabled");
     $messageFormInput.value = "";
     $messageFormInput.focus();
     if (error) {
       return console.log(error);
     }
-    console.log("The message was delivered");
   });
 });
 
@@ -89,10 +78,7 @@ $sendLocationButton.addEventListener("click", () => {
   if (!navigator.geolocation) {
     return alert("Geolacation is not supported by your browser");
   }
-
-  //disable
   $sendLocationButton.setAttribute("disabled", "disabled");
-
   navigator.geolocation.getCurrentPosition((position) => {
     socket.emit(
       "sendLocation",
@@ -101,9 +87,7 @@ $sendLocationButton.addEventListener("click", () => {
         longitude: position.coords.longitude,
       },
       () => {
-        //enable
         $sendLocationButton.removeAttribute("disabled");
-        console.log("Location Shared!");
       }
     );
   });
